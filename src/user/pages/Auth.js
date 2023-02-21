@@ -42,9 +42,11 @@ function Auth() {
                         password: formState.inputs.password.value
                     }),
                     {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        Authorization: 'Bearer ' + auth.token
+
                     })
-                auth.login(response.user.id)
+                auth.login(response.userId, response.token)
             }
             catch (err) {
 
@@ -60,10 +62,11 @@ function Auth() {
                         age: formState.inputs.age.value,
                         contact: formState.inputs.contact.value
                     }), {
-                        'Content-Type': 'application/json'
-                    }
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
+                }
                 );
-                auth.login(response.user.id)
+                auth.login(response.userId, response.token)
             } catch (err) {
 
             }

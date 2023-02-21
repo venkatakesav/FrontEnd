@@ -58,6 +58,7 @@ function JoiningModItem(props) {
                 }),
                 {
                     'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + auth.token
                 }
             );
         } catch (err) {

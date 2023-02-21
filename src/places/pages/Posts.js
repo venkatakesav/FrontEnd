@@ -62,6 +62,7 @@ function Posts() {
             }),
             {
                 'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + auth.token
             })
         } //Redirect the User to a seperate page
         catch (err) { }

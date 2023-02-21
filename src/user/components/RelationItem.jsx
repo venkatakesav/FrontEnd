@@ -19,7 +19,8 @@ function RelationItem(props) {
       const responseData = await sendRequest(`http://localhost:5000/api/users/remove/${auth.userId}`, 'PATCH', JSON.stringify({
         user_to_remove: loadedUsers.id
       }), {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token
       });
       console.log(responseData)
     } catch (err) {

@@ -27,7 +27,9 @@ const PlaceItem = props => {
   const confirmDeleteHandler = async () => {
     console.log("DELETING.......");
     try {
-      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'DELETE', null, {})
+      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'DELETE', null, {
+        Authorization: 'Bearer ' + auth.token
+      })
     } catch (err) {
       console.log("Error")
     }
@@ -39,7 +41,9 @@ const PlaceItem = props => {
       await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'PATCH', JSON.stringify({
         userId: auth.userId
       }),
-        { 'Content-Type': 'application/json' })
+        { 'Content-Type': 'application/json' ,
+        Authorization: 'Bearer ' + auth.token
+      })
     } catch (err) {
       console.log("Error")
     }

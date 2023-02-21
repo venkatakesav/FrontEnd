@@ -13,8 +13,11 @@ import Card from '../../shared/components/UIElements/Card';
 import { useForm } from '../../shared/hooks/form-hook';
 import './PlaceForm.css';
 import { useHttpClient } from '../../shared/hooks/http-hook';
+import { AuthContext } from '../../shared/context/auth-context';
+import { useContext } from 'react';
 
 const UpdatePlace = () => {
+  const auth = useContext(AuthContext)
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedPlace, setLoadedPlace] = useState();
 
@@ -87,7 +90,9 @@ const UpdatePlace = () => {
           tags: formState.inputs.tags.value,
           bannedKeyWords: formState.inputs.bannedKeyWords.value
         }),
-        { 'Content-Type': 'application/json' })
+        { 'Content-Type': 'application/json' ,
+        Authorization: 'Bearer ' + auth.token
+      })
     } catch {
     }
   };
