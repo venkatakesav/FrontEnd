@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import { Link } from 'react-router-dom';
 import Card from '../../shared/components/UIElements/Card';
@@ -20,6 +20,9 @@ const PlaceItem = props => {
   const openMapHandler = () => setShowMap(true);
 
   const closeMapHandler = () => setShowMap(false);
+  const [isRequested, setIsRequested] = useState(false);
+  const [isRejected, setIsRejected] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const showDeleteWarningHandler = () => {
     showUpdateConfirm(true);
@@ -50,6 +53,22 @@ const PlaceItem = props => {
     }
   }
 
+  useEffect(() => {
+    const checkIfRequested = async () => {
+      console.log("CHECKING.......");
+      try {
+        const responseData = await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'GET', null, {})
+        console.log(responseData)
+        if (responseData.place.requests.includes(auth.userId)) {
+          setIsRequested(true);
+        }
+      } catch (err) {
+        console.log("Error")
+      }
+    }
+    checkIfRequested()
+  }, [sendRequest, auth.userId, props.id])
+
   return (
     <>
       {(!props.searchTags || props.tags.includes(props.searchTags)) && (props.title == props.searchVal || !props.searchVal) && <React.Fragment>
@@ -78,8 +97,8 @@ const PlaceItem = props => {
               <p>{props.description}</p>
             </div>
             <div className="place-item__actions">
-              <Button inverse to ={`/${props.id}/posts`}>NAVIGATE TO SUBREDDIT PAGE</Button>
-              {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={joinSubredditHandler}>JOIN</Button>}
+              <Button inverse to={`/${props.id}/posts`}>NAVIGATE TO SUBREDDIT PAGE</Button>
+              {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={joinSubredditHandler} disabled={isRequested}>JOIN</Button>}
               {auth.userId == props.creatorId && auth.isLoggedIn && <Button to={`/places/${props.id}`}>EDIT</Button>}
               {auth.userId == props.creatorId && auth.isLoggedIn && <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>}
             </div>
