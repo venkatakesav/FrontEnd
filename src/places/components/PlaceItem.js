@@ -23,6 +23,8 @@ const PlaceItem = props => {
   const [isRequested, setIsRequested] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
+  const [isLeft, setIsLeft] = useState(false);
+  const [isAllowed, setIsAllowed] = useState(false);
 
   const showDeleteWarningHandler = () => {
     showUpdateConfirm(true);
@@ -53,6 +55,18 @@ const PlaceItem = props => {
     }
   }
 
+  const leaveSubgredditHandler = async () => {
+    console.log("LEAVING.......");
+    try {
+      await sendRequest(`http://localhost:5000/api/places/leave/${props.id}`, 'PATCH', JSON.stringify({
+        userId: auth.userId
+      }),
+        { 'Content-Type': 'application/json' })
+    } catch (err) {
+      console.log("Error")
+    }
+  }
+
   useEffect(() => {
     const checkIfRequested = async () => {
       console.log("CHECKING.......");
@@ -67,6 +81,23 @@ const PlaceItem = props => {
       }
     }
     checkIfRequested()
+  }, [sendRequest, auth.userId, props.id])
+
+  useEffect(() => {
+    const checkIfAllowed = async () => {
+      console.log("CHECKING....... IF ALLOWED");
+      try {
+        const responseData = await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'GET', null, {})
+        console.log(responseData)
+        if (responseData.place.followers.includes(auth.userId)) {
+          setIsAllowed(true);
+          console.log("ALLOWED")
+        }
+      } catch (err) {
+        console.log("Error")
+      }
+    }
+    checkIfAllowed()
   }, [sendRequest, auth.userId, props.id])
 
   return (
@@ -97,8 +128,10 @@ const PlaceItem = props => {
               <p>{props.description}</p>
             </div>
             <div className="place-item__actions">
-              <Button inverse to={`/${props.id}/posts`}>NAVIGATE TO SUBREDDIT PAGE</Button>
+              {isAllowed && <Button inverse to={`/${props.id}/posts`}>NAVIGATE TO SUBREDDIT PAGE</Button>}
+              {/* {console.log(isAllowed)} */}
               {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={joinSubredditHandler} disabled={isRequested}>JOIN</Button>}
+              {isAllowed && auth.userId != props.creatorId && auth.isLoggedIn && isRequested && <Button onClick={leaveSubgredditHandler} >LEAVE</Button>}
               {auth.userId == props.creatorId && auth.isLoggedIn && <Button to={`/places/${props.id}`}>EDIT</Button>}
               {auth.userId == props.creatorId && auth.isLoggedIn && <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>}
             </div>

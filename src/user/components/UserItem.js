@@ -13,22 +13,6 @@ import Card from '../../shared/components/UIElements/Card';
 import Modal from '../../shared/components/UIElements/Modal';
 import './UserItem.css';
 
-const DUMMY_RELATIONS = [
-  {
-    id: 'u1',
-    name: 'Max Schwarz',
-  },
-  {
-    id: 'u2',
-    name: 'Max Schwarz the 1st',
-  },
-  {
-    id: 'u3',
-    name: 'Max Schwarz Junior',
-  }
-]
-
-
 const UserItem = props => {
   //Basically within the User Item component
   //We are going to have to links followers

@@ -49,6 +49,35 @@ function PostItem(props) {
     setDisable(true)
   }
 
+  /*Make a Upvote handler */
+  const upvoteHandler = async (event) => {
+    event.preventDefault()
+    console.log("UPVOTING.......");
+    try {
+      console.log(props.id)
+      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'PATCH', JSON.stringify({
+        upvote: true
+      }), { 'Content-Type': 'application/json' })
+    } catch (err) {
+      console.log("Error")
+    }
+  }
+
+  /*Make A Downvote Handler */
+  const downvoteHandler = async (event) => {
+    event.preventDefault()
+    console.log("DOWNVOTING.......");
+    try {
+      console.log(props.id)
+      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'PATCH', JSON.stringify({
+        downvote: true
+      }), { 'Content-Type': 'application/json' })
+    } catch (err) {
+      console.log("Error")
+    }
+  }
+  
+
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
