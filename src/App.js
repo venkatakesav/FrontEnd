@@ -17,6 +17,8 @@ import Profile from './user/pages/Profile';
 import { useForm } from './shared/hooks/form-hook';
 import { AuthContext } from './shared/context/auth-context';
 import Posts from "./places/pages/Posts";
+import MyUserPlaces from './places/pages/MyUserPlaces';
+import Moderator from './places/pages/Moderator';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,11 +42,13 @@ const App = () => {
       <Routes>
         <Route path="/" exact element={<Users/>}></Route>
         <Route path="/:userId/places" exact element={<UserPlaces/>}></Route>
+        <Route path="/:userId/places/my" exact element={<MyUserPlaces/>}></Route>
         <Route path="/:userId/profile" exact element={<Profile/>}></Route>
         <Route path="/places/new" exact element={<NewPlace/>}></Route>
         <Route path="/places/:placeId" exact element={<UpdatePlace/>}></Route>
         <Route path="/Auth" exact element={<Auth></Auth>}></Route>
         <Route path="/:placeId/Posts" exact element={<Posts></Posts>}></Route>
+        <Route path="/:placeId/moderator" exact element={<Moderator></Moderator>}></Route>
       </Routes>
       </main>
     </Router>

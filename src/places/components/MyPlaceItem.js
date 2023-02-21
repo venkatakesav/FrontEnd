@@ -15,11 +15,6 @@ const PlaceItem = props => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const auth = useContext(AuthContext)
   const [showConfirm, showUpdateConfirm] = useState(false);
-  const [showMap, setShowMap] = useState(false);
-
-  const openMapHandler = () => setShowMap(true);
-
-  const closeMapHandler = () => setShowMap(false);
 
   const showDeleteWarningHandler = () => {
     showUpdateConfirm(true);
@@ -41,7 +36,7 @@ const PlaceItem = props => {
   const joinSubredditHandler = async () => {
     console.log("JOINING.......");
     try {
-      await sendRequest(`http://localhost:5000/api/places/request/${props.id}`, 'PATCH', JSON.stringify({
+      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'PATCH', JSON.stringify({
         userId: auth.userId
       }),
         { 'Content-Type': 'application/json' })
@@ -78,10 +73,7 @@ const PlaceItem = props => {
               <p>{props.description}</p>
             </div>
             <div className="place-item__actions">
-              <Button inverse to ={`/${props.id}/posts`}>NAVIGATE TO SUBREDDIT PAGE</Button>
-              {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={joinSubredditHandler}>JOIN</Button>}
-              {auth.userId == props.creatorId && auth.isLoggedIn && <Button to={`/places/${props.id}`}>EDIT</Button>}
-              {auth.userId == props.creatorId && auth.isLoggedIn && <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>}
+              <Button inverse to ={`/${props.id}/moderator`}>OPEN AS MODERATOR</Button>
             </div>
           </Card>
         </li>
