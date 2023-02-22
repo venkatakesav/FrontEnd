@@ -45,9 +45,10 @@ function PostItem(props) {
       console.log(props.id)
       await sendRequest(`http://localhost:5000/api/users/${auth.userId}`, 'PATCH', JSON.stringify({
         post_id: props.id
-      }), { 'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + auth.token
-    })
+      }), {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token
+      })
     } catch (err) {
       console.log("Error")
     }
@@ -62,9 +63,10 @@ function PostItem(props) {
       console.log(props.id)
       await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'PATCH', JSON.stringify({
         upvote: true
-      }), { 'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + auth.token
-    })
+      }), {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token
+      })
     } catch (err) {
       console.log("Error")
     }
@@ -78,14 +80,31 @@ function PostItem(props) {
       console.log(props.id)
       await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'PATCH', JSON.stringify({
         downvote: true
-      }), { 'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + auth.token
-    })
+      }), {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token
+      })
     } catch (err) {
       console.log("Error")
     }
   }
-  
+
+  /*Add a given post to saved posts */
+  const saveHandler = async (event) => {
+    event.preventDefault()
+    console.log("SAVING.......");
+    try {
+      console.log(props.id)
+      await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/user_saved/saved`, 'PATCH', JSON.stringify({
+        post_id: props.id
+      }), {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token
+      })
+    } catch (err) {
+      console.log("Error")
+    }
+  }
 
   return (
     <React.Fragment>
@@ -108,6 +127,7 @@ function PostItem(props) {
             {auth.userId != props.creatorId && auth.isLoggedIn && <Button>UPVOTE</Button>}
             {auth.isLoggedIn && <Button danger >DOWNVOTE</Button>}
             {auth.userId != props.postedBy && auth.isLoggedIn && <Button onClick={followHandler} disabled={disable}>FOLLOW</Button>}
+            <Button onClick={saveHandler}>SAVE</Button>
           </div>
         </Card>
       </li>

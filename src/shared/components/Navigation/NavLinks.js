@@ -29,6 +29,10 @@ const NavLinks = props => {
       <li>
         <NavLink to="/places/new">NEW SUBGREDDIT</NavLink>
       </li>)}
+    {auth.isLoggedIn && (
+      <li>
+        <NavLink to={`/${u__id}/posts/saved`}>SAVED POSTS</NavLink>
+      </li>)}
     {!auth.isLoggedIn && (
       <li>
         <NavLink to="/auth">AUTHENTICATE</NavLink>

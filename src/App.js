@@ -19,6 +19,7 @@ import { AuthContext } from './shared/context/auth-context';
 import Posts from "./places/pages/Posts";
 import MyUserPlaces from './places/pages/MyUserPlaces';
 import Moderator from './places/pages/Moderator';
+import Saved_Posts from './places/pages/Saved_Posts';
 
 
 const App = () => {
@@ -60,6 +61,7 @@ const App = () => {
             <Route path="/Auth" exact element={<Auth></Auth>}></Route>
             <Route path="/:placeId/Posts" exact element={<Posts></Posts>}></Route>
             <Route path="/:placeId/moderator" exact element={<Moderator></Moderator>}></Route>
+            <Route path="/:userId/posts/saved" exact element={<Saved_Posts></Saved_Posts>}></Route>
           </Routes>
         </main>
       </Router>
