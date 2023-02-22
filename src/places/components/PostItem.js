@@ -58,11 +58,10 @@ function PostItem(props) {
   /*Make a Upvote handler */
   const upvoteHandler = async (event) => {
     event.preventDefault()
-    console.log("UPVOTING.......");
+    console.log(`http://localhost:5000/api/posts/${props.id}/upvote`);
     try {
       console.log(props.id)
-      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'PATCH', JSON.stringify({
-        upvote: true
+      await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/${props.id}/upvote`, 'PATCH', JSON.stringify({
       }), {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + auth.token
@@ -75,11 +74,10 @@ function PostItem(props) {
   /*Make A Downvote Handler */
   const downvoteHandler = async (event) => {
     event.preventDefault()
-    console.log("DOWNVOTING.......");
+    console.log(`http://localhost:5000/api/posts/${props.id}/downvote`);
     try {
       console.log(props.id)
-      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'PATCH', JSON.stringify({
-        downvote: true
+      await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/${props.id}/downvote`, 'PATCH', JSON.stringify({
       }), {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + auth.token
@@ -124,8 +122,8 @@ function PostItem(props) {
               <p>{props.description}</p> */}
           </div>
           <div className="place-item__actions">
-            {auth.userId != props.creatorId && auth.isLoggedIn && <Button>UPVOTE</Button>}
-            {auth.isLoggedIn && <Button danger >DOWNVOTE</Button>}
+            {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={upvoteHandler}>UPVOTE</Button>}
+            {auth.isLoggedIn && <Button danger onClick={downvoteHandler}>DOWNVOTE</Button>}
             {auth.userId != props.postedBy && auth.isLoggedIn && <Button onClick={followHandler} disabled={disable}>FOLLOW</Button>}
             <Button onClick={saveHandler}>SAVE</Button>
           </div>
